@@ -57,95 +57,33 @@
         }
       }
 
-    // 在then的时候我们的promise状态有3种可能
-    if(self.status === 'pending') {
-      // 如果是等待的时候说明没有执行 resolve，我们要将注册的回调函数存到 callbacks 数组里面
-      // 等待resolve的时候去遍历callbacks
-      self.callbacks.push({
-        onResolved(){
-          try {
-            let result = onResolved(self.data)
-            if(result instanceof CustomPromise) {
-              result.then( value => {resolve(value)}, reason => {reject(reason)})
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e)
+      // 在then的时候我们的promise状态有3种可能
+      if(self.status === 'pending') {
+
+        // 如果是等待的时候说明没有执行 resolve，我们要将注册的回调函数存到 callbacks 数组里面
+        // 等待resolve的时候去遍历callbacks
+        self.callbacks.push({
+          onResolved(){
+            handle(onResolved)
+          },
+          onRejected(){
+            handle(onRejected)
           }
-
-        },
-        onRejected(){
-          try {
-            let result = onRejected(self.data)
-            if(result instanceof CustomPromise) {
-              result.then( value => {resolve(value)}, reason => {reject(reason)})
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e)
-          }
-        }
-      })
-
-    } else if(self.status === 'resolved') {
-      setTimeout(() => {
-
-          try {
-            let result = onResolved(self.data)
-            if(result instanceof CustomPromise) {
-              result.then( value => {resolve(value)}, reason => {reject(reason)})
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e)
-          }
-      })
-
-    } else if(self.status === 'rejected') {
-      setTimeout(() => {
-          try{
-            let result = onRejected(self.data)
-            if(result instanceof CustomPromise) {
-              result.then( value => {resolve(value)}, reason => {reject(reason)})
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e)
-          }
-      })
-    }
-
+        })
+      } else if(self.status === 'resolved') {
+        setTimeout(() => {
+            handle(onResolved)
+        })
+      } else if(self.status === 'rejected') {
+        setTimeout(() => {
+          handle(onRejected)
+        })
+      }
     })
 
   }
 
-
-
-// 错误的理解！！！！！！
-// 在 then 的判断 self.status === 'resolved' 第一层为什么要包一层 setTimeout, 目的是为了异步，让 then 的回调函数注册
-// 到callback上面，是为了解决以下场景
-
-// new Promise((resolve, reject) => {
-//   resolve(1) // 比如这里是同步,去调用 resolve，resolve 函数的实现会遍历callbacks，此刻then的回调还没有被注册上
-// }).then(res => {
-//   console.log(res);
-// }, reason => {
-//   console.log(reason);
-// })
-// 错误的理解！！！！！！
-
-
-
-
   window.CustomPromise = CustomPromise;
-  // new CustomPromise((resolve, reject) => {
-  //   console.log('Promise的构造函数')
-  //   resolve(1)
-  // })
 
   new CustomPromise((resolve, reject) => {
     console.log('执行构造函数');
@@ -154,8 +92,9 @@
     }, 5000)
   }).then(res => {
     console.log(res);
-  }, reason => {
-    console.log(reason);
+    return new CustomPromise((resolve) => {
+      resolve(res)
+    })
   }).then(res=> {
     console.log(res)
   })
