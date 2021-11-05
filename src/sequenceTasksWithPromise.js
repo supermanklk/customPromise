@@ -1,4 +1,5 @@
 (() => {
+  // https://blog.csdn.net/feinifi/article/details/105832034
   // 该例子是弥补 Promise.all 不按顺序执行
   console.log('执行了 sequenceTasksWithPromise')
 
