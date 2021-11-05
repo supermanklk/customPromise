@@ -83,6 +83,29 @@
 
   }
 
+
+  CustomPromise.reject = function(reason) {
+    return new CustomPromise((resolve, reject) => {
+      reject(reason)
+    })
+  }
+
+  CustomPromise.resolve = function() {
+
+  }
+
+  CustomPromise.all = function() {
+
+  }
+
+  CustomPromise.race = function() {
+
+  }
+
+  CustomPromise.catch = function() {
+
+  }
+
   window.CustomPromise = CustomPromise;
 
   new CustomPromise((resolve, reject) => {
