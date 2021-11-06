@@ -96,3 +96,31 @@ Promise.all、Promise.race、Promise.reject、Promise.resolve、实现catch方�
 type: 手撕第一版本 0.0.2 end
 
 ------------
+type: 手撕第一版本 0.0.3 start
+
+name: CustomPromise
+
+实现的功能:
+
+1、CustomPromise构造函数立即执行、定义 status、data、callbacks、resolve、reject、executor(resolve, reject)
+
+2、原型对象上then方法（3种情况的判断 pending resolved rejected ）
+
+3、函数内resolve方法
+
+4、Promise.all、Promise.race、Promise.reject、Promise.resolve、实现catch方法
+
+5、习题：sequenceTasksWithPromise（多个promise按顺序执行 reduce版本）- sequenceTasksWithPromise.js - 完成
+
+6、习题：多个promise按顺序执行习题 -（for循环版本） - 待完成
+
+7、习题：多个promise按顺序执行习题 - sequenceText.js - 待完成
+
+未实现的功能:
+
+待验证 Promise.all、Promise.race、Promise.reject、Promise.resolve、实现catch方法
+
+
+type: 手撕第一版本 0.0.3 end
+
+------------

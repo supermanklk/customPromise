@@ -8,7 +8,7 @@
       setTimeout(() => {
         console.log('执行了一次 createEvent, time :', new Date().getTime())
         resolve(1)
-      }, 1000)
+      }, 2000)
     })
   }
   const tasks = [createEvent, createEvent, createEvent];
